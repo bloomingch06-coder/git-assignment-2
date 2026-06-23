@@ -1,167 +1,120 @@
 # git-assignment 2
 
-```python
 # 가챠 아이템 교환 프로그램
-# 사용자는 자신의 보유 아이템과 원하는 아이템을 관리하고,
-# 다른 사용자의 교환 글 중 조건이 맞는 글을 찾을 수 있다.
 
+가챠에서 얻은 아이템을 다른 사용자와 교환할 수 있도록 만든 Python 프로그램이다.
 
-my_items = ["에렌", "피카츄", "코난"]
-wanted_items = []
+사용자는 자신이 보유한 아이템과 원하는 아이템을 등록할 수 있으며, 등록된 교환 글 중에서 서로 원하는 조건이 맞는 사용자를 찾을 수 있다.
 
-exchange_posts = [
-    {
-        "user": "푸앙",
-        "have": "리바이",
-        "want": "에렌"
-    },
-    {
-        "user": "앙푸",
-        "have": "님피아",
-        "want": "피카츄"
-    },
-    {
-        "user": "푸푸",
-        "have": "괴도키드",
-        "want": "코난"
-    }
-]
+---
 
+## 주요 기능
 
-def show_my_items():
-    print("\n[내 보유 아이템]")
+* 내 보유 아이템 확인
+* 내 보유 아이템 추가
+* 원하는 아이템 등록 및 확인
+* 다른 사용자의 교환 글 확인
+* 교환 가능한 사용자 찾기
+* 새로운 교환 글 등록
+* 프로그램 종료
 
-    if len(my_items) == 0:
-        print("보유한 아이템이 없습니다.")
-    else:
-        for number, item in enumerate(my_items, start=1):
-            print(f"{number}. {item}")
+---
 
+## 프로그램 구조
 
-def add_my_item():
-    item = input("추가할 보유 아이템을 입력하세요: ").strip()
+이 프로그램에서는 리스트와 딕셔너리를 사용하여 아이템 및 교환 글 정보를 저장하였다.
 
-    if item == "":
-        print("아이템 이름을 입력하지 않았습니다.")
-    else:
-        my_items.append(item)
-        print(f"'{item}'이(가) 보유 아이템에 추가되었습니다.")
+* `my_items`: 내가 보유한 아이템 목록
+* `wanted_items`: 내가 원하는 아이템 목록
+* `exchange_posts`: 다른 사용자의 교환 글 목록
 
+각 교환 글에는 작성자, 보유 아이템, 원하는 아이템 정보가 저장된다.
 
-def show_wanted_items():
-    print("\n[내가 원하는 아이템]")
-
-    if len(wanted_items) == 0:
-        print("원하는 아이템이 등록되지 않았습니다.")
-    else:
-        for number, item in enumerate(wanted_items, start=1):
-            print(f"{number}. {item}")
-
-
-def add_wanted_item():
-    item = input("원하는 아이템을 입력하세요: ").strip()
-
-    if item == "":
-        print("아이템 이름을 입력하지 않았습니다.")
-    else:
-        wanted_items.append(item)
-        print(f"'{item}'이(가) 원하는 아이템에 추가되었습니다.")
-
-
-def show_exchange_posts():
-    print("\n[전체 교환 글]")
-
-    if len(exchange_posts) == 0:
-        print("등록된 교환 글이 없습니다.")
-    else:
-        for number, post in enumerate(exchange_posts, start=1):
-            print(f"{number}. 작성자: {post['user']}")
-            print(f"   보유 아이템: {post['have']}")
-            print(f"   원하는 아이템: {post['want']}")
-
-
-def find_matching_posts():
-    print("\n[교환 가능한 사용자 찾기]")
-
-    match_count = 0
-
-    for post in exchange_posts:
-        # 상대방이 가진 아이템이 내가 원하는 아이템에 있고,
-        # 상대방이 원하는 아이템이 내 보유 아이템에 있으면 교환 가능
-        if post["have"] in wanted_items and post["want"] in my_items:
-            print(f"작성자: {post['user']}")
-            print(f"받을 수 있는 아이템: {post['have']}")
-            print(f"내가 제공할 아이템: {post['want']}")
-            print("-" * 30)
-            match_count += 1
-
-    if match_count == 0:
-        print("현재 조건에 맞는 교환 글이 없습니다.")
-        print("원하는 아이템을 등록하거나 보유 아이템을 추가해 보세요.")
-
-
-def add_exchange_post():
-    user_name = input("작성자 이름을 입력하세요: ").strip()
-    have_item = input("교환 가능한 보유 아이템을 입력하세요: ").strip()
-    want_item = input("원하는 아이템을 입력하세요: ").strip()
-
-    if user_name == "" or have_item == "" or want_item == "":
-        print("모든 항목을 입력해야 합니다.")
-    else:
-        new_post = {
-            "user": user_name,
-            "have": have_item,
-            "want": want_item
-        }
-
-        exchange_posts.append(new_post)
-        print("교환 글이 등록되었습니다.")
-
-
-def print_menu():
-    """메뉴를 출력하는 함수"""
-    print("\n" + "=" * 35)
-    print("        가챠 아이템 교환 프로그램")
-    print("=" * 35)
-    print("1. 내 보유 아이템 보기")
-    print("2. 내 보유 아이템 추가")
-    print("3. 원하는 아이템 보기")
-    print("4. 원하는 아이템 추가")
-    print("5. 전체 교환 글 보기")
-    print("6. 교환 가능한 사용자 찾기")
-    print("7. 교환 글 등록")
-    print("0. 프로그램 종료")
-
-
-while True:
-    print_menu()
-    choice = input("메뉴 번호를 선택하세요: ").strip()
-
-    if choice == "1":
-        show_my_items()
-
-    elif choice == "2":
-        add_my_item()
-
-    elif choice == "3":
-        show_wanted_items()
-
-    elif choice == "4":
-        add_wanted_item()
-
-    elif choice == "5":
-        show_exchange_posts()
-
-    elif choice == "6":
-        find_matching_posts()
-
-    elif choice == "7":
-        add_exchange_post()
-
-    elif choice == "0":
-        print("가챠 아이템 교환 프로그램을 종료합니다.")
-        break
-
-    else:
-        print("올바른 메뉴 번호를 입력하세요.")
+```python
+{
+    "user": "푸앙",
+    "have": "리바이",
+    "want": "에렌"
+}
 ```
+
+위 교환 글은 푸앙이라는 사용자가 `리바이`를 가지고 있으며, `에렌`을 원한다는 의미이다.
+
+---
+
+## 교환 가능 조건
+
+교환은 다음 두 조건이 모두 만족될 때 가능하다.
+
+1. 상대방이 가진 아이템이 내가 원하는 아이템에 포함되어야 한다.
+2. 상대방이 원하는 아이템이 내가 보유한 아이템에 포함되어야 한다.
+
+예를 들어 내가 `에렌`을 가지고 있고 `리바이`를 원할 때,
+상대방이 `리바이`를 가지고 있으며 `에렌`을 원한다면 교환 가능한 사용자로 표시된다.
+
+---
+
+## 실행 방법
+
+Python이 설치된 환경에서 다음 명령어를 입력한다.
+
+```bash
+python gacha_exchange.py
+```
+
+실행하면 다음과 같은 메뉴가 출력된다.
+
+<img width="184" height="124" alt="가챠 아이템 교환 프로그램의 메인 메뉴 실행 화면" src="https://github.com/user-attachments/assets/f102c1da-f333-4435-966a-43a941bf5a0a" />
+
+---
+
+## 사용한 Python 개념
+
+| 개념                        | 사용 목적                    |
+| ------------------------- | ------------------------ |
+| 리스트(`list`)               | 보유 아이템, 원하는 아이템, 교환 글 저장 |
+| 딕셔너리(`dict`)              | 사용자 이름과 교환 조건 저장         |
+| 함수(`def`)                 | 메뉴별 기능을 나누어 구현           |
+| 조건문(`if`, `elif`, `else`) | 메뉴 선택 및 교환 조건 판단         |
+| 반복문(`for`, `while`)       | 목록 출력 및 프로그램 반복 실행       |
+| `input()`                 | 사용자 입력 받기                |
+| `enumerate()`             | 아이템 목록에 번호 붙여 출력하기       |
+
+---
+
+## 실행 화면
+
+프로그램을 직접 실행하여 보유 아이템 추가, 원하는 아이템 등록, 전체 교환 글 확인, 교환 가능한 사용자 찾기, 프로그램 종료 기능이 정상적으로 작동하는지 확인하였다.
+
+### 1. 보유 아이템 추가 및 확인
+
+사용자가 메뉴에서 `2`를 선택하면 새로운 보유 아이템을 추가할 수 있다.
+아래 실행 화면에서는 `조로`를 보유 아이템에 추가한 뒤, 메뉴 `1`을 선택하여 목록에 정상적으로 반영된 것을 확인할 수 있다.
+
+<img width="218" height="334" alt="조로를 보유 아이템에 추가하고 보유 아이템 목록을 확인한 실행 화면" src="https://github.com/user-attachments/assets/deb34f93-37ac-4541-961d-f3750a2d35a6" />
+
+### 2. 원하는 아이템 등록 및 확인
+
+사용자가 메뉴에서 `4`를 선택하면 원하는 아이템을 등록할 수 있다.
+아래 실행 화면에서는 `괴도키드`를 원하는 아이템으로 추가한 뒤, 메뉴 `3`을 선택하여 등록된 목록을 확인하였다.
+
+<img width="244" height="305" alt="괴도키드를 원하는 아이템으로 등록하고 원하는 아이템 목록을 확인한 실행 화면" src="https://github.com/user-attachments/assets/09c01dc3-a819-4ab1-8ac5-fc8ec9f9980a" />
+
+### 3. 전체 교환 글 확인 및 교환 가능한 사용자 찾기
+
+사용자가 메뉴에서 `5`를 선택하면 등록되어 있는 전체 교환 글을 확인할 수 있다.
+각 교환 글에는 작성자, 보유 아이템, 원하는 아이템 정보가 표시된다.
+
+이후 메뉴에서 `6`을 선택하면, 내가 원하는 아이템과 상대방의 보유 아이템이 일치하고 상대방이 원하는 아이템을 내가 보유한 경우 교환 가능한 사용자로 표시된다.
+
+아래 실행 화면에서는 `괴도키드`를 보유하고 `코난`을 원하는 푸푸가 교환 가능한 사용자로 표시된 것을 확인할 수 있다.
+
+<img width="184" height="420" alt="전체 교환 글을 확인하고 푸푸와의 교환 가능 여부를 확인한 실행 화면" src="https://github.com/user-attachments/assets/9cb51c82-5f57-4b26-8bc5-bce59e90ef61" />
+
+### 4. 프로그램 종료
+
+사용자가 메뉴에서 `0`을 입력하면 프로그램이 종료된다.
+
+<img width="223" height="143" alt="가챠 아이템 교환 프로그램을 종료하는 실행 화면" src="https://github.com/user-attachments/assets/dc51a0b9-8530-4805-aa36-742a6eaa30c1" />
+
+위 실행 결과를 통해 보유 아이템 관리, 원하는 아이템 관리, 교환 글 조회, 교환 가능한 사용자 찾기, 메뉴 선택 및 프로그램 종료 기능이 정상적으로 작동함을 확인하였다.
